@@ -1,18 +1,14 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class Home extends StatelessWidget {
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("BookWarm"),
-      ),
-      body: const Text("Ciao"),
-      drawer: const Drawer(
-        child: Text("Drawer"),
-      ),
+    return const Column(
+      children: [
+        Text("Letture in corso"),
+      ],
     );
   }
 }
