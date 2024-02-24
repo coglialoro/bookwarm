@@ -41,12 +41,7 @@ class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        title: const Text("Aggiungi libro"),
       ),
       body: Column(
         children: [
@@ -71,6 +66,8 @@ class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
           const Text("ISBN"),
           TextField(
             controller: controllerIsbn,
+            maxLength: 13,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
           const Text("Descrizione"),
           TextField(
@@ -87,7 +84,6 @@ class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
                   casaEditice: controllerCasaEditrice.value.text,
                   descrizione: controllerDescrizione.value.text,
                 );
-                //libri.put(controllerIsbn.value.text, libro);
                 libri.add(libro);
                 Navigator.pop(context);
               },

@@ -18,21 +18,18 @@ class SessioneAdapter extends TypeAdapter<Sessione> {
     };
     return Sessione(
       pagineLette: fields[0] as int,
-      inizio: fields[1] as DateTime,
-      fine: fields[2] as DateTime,
+      durata: fields[1] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Sessione obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.pagineLette)
       ..writeByte(1)
-      ..write(obj.inizio)
-      ..writeByte(2)
-      ..write(obj.fine);
+      ..write(obj.durata);
   }
 
   @override

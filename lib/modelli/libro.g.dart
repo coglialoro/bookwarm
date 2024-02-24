@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'libro.dart';
+part of "libro.dart";
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -24,9 +24,8 @@ class LibroAdapter extends TypeAdapter<Libro> {
       isbn: fields[4] as String,
       descrizione: fields[5] as String?,
       copertina: fields[6] as String?,
-    )
-      ..stato = fields[7] as Stato
-      ..sessioni = (fields[8] as List).cast<Sessione>();
+      stato: fields[7] as Stato,
+    )..sessioni = (fields[8] as HiveList).castHiveList();
   }
 
   @override

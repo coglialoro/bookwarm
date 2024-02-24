@@ -15,6 +15,9 @@ void main() async {
   Hive.registerAdapter(LibroAdapter());
 
   await Hive.openBox<Libro>("libri");
+  await Hive.openBox<Sessione>("sessioni");
+
+  //mybox.deleteFromDisk();
 
   runApp(
     const MaterialApp(
