@@ -16,21 +16,21 @@ enum Stato {
 @HiveType(typeId: 0)
 class Libro extends HiveObject {
   @HiveField(0)
-  String titolo;
+  late String titolo;
   @HiveField(1)
-  String autore;
+  late String autore;
   @HiveField(2)
-  int pagine;
+  late int pagine;
   @HiveField(3)
   String? casaEditice;
   @HiveField(4)
-  String isbn;
+  late String isbn;
   @HiveField(5)
   String? descrizione;
   @HiveField(6)
   String? copertina;
   @HiveField(7)
-  Stato stato;
+  late Stato stato;
 
   static Box<Sessione> boxSessioni = Hive.box<Sessione>("sessioni");
   @HiveField(8)
@@ -46,26 +46,6 @@ class Libro extends HiveObject {
     this.copertina,
     this.stato = Stato.daLeggere,
   });
-
-  // Libro copyWith({
-  //   String? titolo,
-  //   String? autore,
-  //   int? pagine,
-  //   String? casaEditrice,
-  //   String? descrizione,
-  //   String? copertina,
-  //   Stato? stato,
-  // }) =>
-  //     Libro(
-  //       titolo: titolo ?? this.titolo,
-  //       autore: autore ?? this.autore,
-  //       pagine: pagine ?? this.pagine,
-  //       casaEditice: casaEditice ?? casaEditice,
-  //       isbn: isbn,
-  //       descrizione: descrizione ?? this.descrizione,
-  //       copertina: copertina ?? this.copertina,
-  //       stato: stato ?? this.stato,
-  //     );
 
   String getStatoString() {
     switch (stato) {
@@ -88,5 +68,14 @@ class Libro extends HiveObject {
         Sessione(pagineLette: pagine, durata: durata.inMilliseconds);
     await boxSessioni.add(sessione);
     sessioni.add(sessione);
+  }
+
+  Libro.fromJson(Map<String, dynamic> json) {
+    titolo = json["title"];
+    autore = json["authors"].cast<String>()[0];
+    pagine = json["pageCount"];
+    isbn = json["industryIdentifiers"][1]["identifier"];
+    copertina = json["imageLinks"]["thumbnail"];
+    stato = Stato.daLeggere;
   }
 }

@@ -13,18 +13,58 @@ class DettagliLibro extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Dettagli libro"),
       ),
-      body: Column(
+      body: ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(8),
         children: [
           if (libro.copertina != null && libro.copertina != "") ...[
-            Image.network(libro.copertina!),
+            Image.network(
+              libro.copertina!,
+              height: 128,
+              width: 128,
+            ),
           ],
-          Text(libro.titolo),
-          Text(libro.autore),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Text(
+                libro.titolo,
+                style: const TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Text(
+                libro.autore,
+                style: const TextStyle(fontSize: 18),
+              ),
+            ),
+          ),
           Text(libro.casaEditice ?? ""),
           Text(libro.descrizione ?? ""),
-          Text(libro.isbn),
-          Text("${libro.pagine}"),
-          Text(libro.getStatoString()),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("ISBN: "),
+              Text(libro.isbn),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("Pagine: "),
+              Text("${libro.pagine}"),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("Stato: "),
+              Text(libro.getStatoString()),
+            ],
+          ),
           if (libro.stato == Stato.daLeggere ||
               libro.stato == Stato.finito) ...[
             ElevatedButton(
@@ -32,9 +72,6 @@ class DettagliLibro extends StatelessWidget {
               onPressed: () {
                 libro.stato = Stato.inLettura;
                 libro.save();
-                // final libri = Hive.box<Libro>("libri");
-
-                // libri.put(libro.isbn, libro.copyWith(stato: Stato.inLettura));
                 Navigator.pop(context);
               },
             )
@@ -46,41 +83,43 @@ class DettagliLibro extends StatelessWidget {
               onPressed: () {
                 libro.stato = Stato.finito;
                 libro.save();
-                // final libri = Hive.box<Libro>("libri");
-                // libri.put(libro.isbn, libro.copyWith(stato: Stato.finito));
                 Navigator.pop(context);
               },
             )
           ],
-          ElevatedButton(
-            child: const Text("Elimina"),
-            onPressed: () {
-              libro.delete();
-              // final libri = Hive.box<Libro>("libri");
-              // libri.delete(libro.isbn);
-              Navigator.pop(context);
-            },
-          ),
           if (libro.stato == Stato.inLettura) ...[
             const Text("Sessioni"),
-            ...libro.sessioni
-                .map(
-                  (sessione) => Text(
-                      "Tempo: ${Duration(milliseconds: sessione.durata).toString()}, Pagine:${sessione.pagineLette}"),
-                )
-                .toList(),
+            ...libro.sessioni.map((sessione) {
+              final durata = Duration(milliseconds: sessione.durata);
+              final ore = durata.inHours;
+              final minuti = durata.inMinutes - ore * 60;
+              final secondi = durata.inSeconds - ore * 3600 - minuti * 60;
+              return Text(
+                  "Tempo: ${ore > 0 ? "$ore ore, " : ""} ${minuti > 0 ? "$minuti minuti ," : ""}$secondi secondi, Pagine:${sessione.pagineLette}");
+            }).toList(),
             ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GestioneSessione(libro: libro),
-                    ),
-                  );
-                },
-                child: const Text("Inizia sessione"))
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GestioneSessione(libro: libro),
+                  ),
+                );
+              },
+              child: const Text("Inizia sessione"),
+            ),
           ]
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.delete),
+        onPressed: () {
+          for (final session in libro.sessioni) {
+            session.delete();
+          }
+          libro.delete();
+          Navigator.pop(context);
+        },
       ),
     );
   }

@@ -11,10 +11,33 @@ class Home extends StatelessWidget {
     return ValueListenableBuilder<Box<Libro>>(
       valueListenable: Hive.box<Libro>("libri").listenable(),
       builder: (context, box, _) {
-        return ListaLibri(
-            libri: box.values
-                .where((element) => element.stato == Stato.inLettura)
-                .toList());
+        final daLeggere = box.values
+            .where((element) => element.stato == Stato.inLettura)
+            .toList();
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 0),
+              child: Row(
+                children: [
+                  const Text(
+                    "In lettura  ",
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                  Badge(
+                    backgroundColor: Colors.grey[400],
+                    label: Text(
+                      "${daLeggere.length}",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListaLibri(libri: daLeggere),
+            ),
+          ],
+        );
       },
     );
   }

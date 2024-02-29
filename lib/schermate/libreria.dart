@@ -11,7 +11,18 @@ class Libreria extends StatelessWidget {
     return ValueListenableBuilder<Box<Libro>>(
       valueListenable: Hive.box<Libro>("libri").listenable(),
       builder: (context, box, _) {
-        return ListaLibri(libri: box.values.toList());
+        return Column(children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 0, 16.0, 0),
+            child: Text(
+              "Libreria",
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ),
+          Expanded(
+            child: ListaLibri(libri: box.values.toList()),
+          ),
+        ]);
       },
     );
   }

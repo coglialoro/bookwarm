@@ -42,23 +42,37 @@ class _GestioneSessioneState extends State<GestioneSessione> {
   }
 
   String returnFormattedText() {
-    var milli = stopwatch.elapsed.inMilliseconds;
+    final milli = stopwatch.elapsed.inMilliseconds;
 
-    String _ = (milli % 1000)
-        .toString()
-        .padLeft(3, "0"); // this one for the miliseconds
-    String seconds = ((milli ~/ 1000) % 60)
-        .toString()
-        .padLeft(2, "0"); // this is for the second
-    String minutes = ((milli ~/ 1000) ~/ 60)
-        .toString()
-        .padLeft(2, "0"); // this is for the minute
+    var secondi = milli ~/ 1000;
 
-    String hours = ((milli ~/ 1000) ~/ 60)
-        .toString()
-        .padLeft(2, "0"); // this is for the hour
+    final ore = secondi ~/ 3600;
 
-    return "$hours:$minutes:$seconds";
+    secondi -= ore * 3600;
+
+    final minuti = secondi ~/ 60;
+
+    secondi -= minuti * 60;
+
+    final stringaSecondi = secondi.toString().padLeft(2, "0");
+    final stringaMinuti = minuti.toString().padLeft(2, "0");
+    final stringOre = ore.toString().padLeft(2, "0");
+
+    return "$stringOre:$stringaMinuti:$stringaSecondi";
+
+    // String _ = (milli % 1000)
+    //     .toString()
+    //     .padLeft(3, "0"); // this one for the miliseconds
+    // String seconds = ((milli ~/ 1000) % 60)
+    //     .toString()
+    //     .padLeft(2, "0"); // this is for the second
+    // String minutes = ((milli ~/ 1000) ~/ 60)
+    //     .toString()
+    //     .padLeft(2, "0"); // this is for the minute
+
+    // String hours = ((milli ~/ 1000) ~/ 60)
+    //     .toString()
+    //     .padLeft(2, "0"); // this is for the hour
   }
 
   @override

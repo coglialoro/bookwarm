@@ -43,7 +43,7 @@ class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
       appBar: AppBar(
         title: const Text("Aggiungi libro"),
       ),
-      body: Column(
+      body: ListView(
         children: [
           const Text("Titolo"),
           TextField(
