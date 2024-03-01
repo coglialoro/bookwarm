@@ -11,8 +11,10 @@ class AggiungiLibroManuale extends StatefulWidget {
 }
 
 class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
+  // Chiave globale per gestire lo stato della form
   final formKey = GlobalKey<FormState>();
 
+  // Controllers per i campi della form
   late TextEditingController controllerTitolo;
   late TextEditingController controllerAutore;
   late TextEditingController controllerCasaEditrice;
@@ -26,6 +28,7 @@ class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
   void initState() {
     super.initState();
 
+    // Inizializzazione controllers
     controllerTitolo = TextEditingController();
     controllerAutore = TextEditingController();
     controllerCasaEditrice = TextEditingController();
@@ -33,11 +36,13 @@ class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
     controllerIsbn = TextEditingController();
     controllerDescrizione = TextEditingController();
 
+    // Apriamo la box
     libri = Hive.box("libri");
   }
 
   @override
   void dispose() {
+    // Liberiamo le risorse
     controllerTitolo.dispose();
     controllerAutore.dispose();
     controllerCasaEditrice.dispose();
@@ -60,8 +65,11 @@ class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                // Associamo il controller al campo
                 controller: controllerTitolo,
+                // Mostriamo il suggerimento per ogni campo
                 decoration: const InputDecoration(hintText: "Titolo"),
+                // Validazione
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Inserisci un titolo";
@@ -136,7 +144,9 @@ class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                   onPressed: () async {
+                    // Controlliamo se l'attuale stato della form e' valido
                     if (formKey.currentState!.validate()) {
+                      // Instanziamo un nuovo libro
                       final libro = Libro(
                         titolo: controllerTitolo.value.text,
                         autore: controllerAutore.value.text,
@@ -145,6 +155,8 @@ class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
                         casaEditice: controllerCasaEditrice.value.text,
                         descrizione: controllerDescrizione.value.text,
                       );
+
+                      // e lo inseriamo nella `Box`
                       libri.add(libro);
                       Navigator.pop(context);
                     }

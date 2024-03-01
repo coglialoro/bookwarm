@@ -13,20 +13,26 @@ import "package:hive_flutter/hive_flutter.dart";
 import "package:http/http.dart" as http;
 
 void main() async {
+  // Inizializzazione necessaria per `Hive`
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 
+  // Registriamo gli `Adapter` per le classi di `Hive`
   Hive.registerAdapter(StatoAdapter());
   Hive.registerAdapter(SessioneAdapter());
   Hive.registerAdapter(LibroAdapter());
 
+  // Apriamo le `Box` di `Hive`
+  // Ogni `Box` e' piu' o meno equivalente ad una tabella sql
   await Hive.openBox<Libro>("libri");
   await Hive.openBox<Sessione>("sessioni");
 
   runApp(
     MaterialApp(
       home: const App(),
+      // Nascondiamo il banner di debug
       debugShowCheckedModeBanner: false,
+      // Definiamo il tema per l'app
       theme: ThemeData.from(
         colorScheme: const ColorScheme.light().copyWith(
           primary: Colors.blue[200],
@@ -44,8 +50,10 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  // Indice della pagina selezionata, per passare da `Libreria` ad `Home`
   int _selectedIndex = 0;
 
+  // Lista delle pagine
   static const List<Widget> _pages = [
     Home(),
     Libreria(),
@@ -54,6 +62,7 @@ class _AppState extends State<App> {
   Future<void> scansioneCodice() async {
     String codiceLetto;
 
+    // Proviamo a leggere un codice con la fotocamera
     try {
       codiceLetto = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.BARCODE);
@@ -61,16 +70,22 @@ class _AppState extends State<App> {
       codiceLetto = "Failed to get a platform version";
     }
 
+    // Url dell'API di Google Books
     final url = Uri.https(
         "www.googleapis.com", "/books/v1/volumes", {"q": "isbn:$codiceLetto"});
+
+    // Chiamiamo l'API
     final risposta = await http.get(url);
 
+    // Controlliamo la risposta
     if (risposta.statusCode == 200) {
+      // Decodifichiamo la risposta
       final jsonRisposta =
           convert.jsonDecode(risposta.body) as Map<String, dynamic>;
 
       final risultati = RisultatoAPI.fromJson(jsonRisposta);
 
+      // Creiamo il `Libro`
       if (risultati.items != null && risultati.items!.isNotEmpty) {
         final primo = risultati.items!.first;
         final libro = primo.volumeInfo!;
@@ -92,6 +107,7 @@ class _AppState extends State<App> {
             fontFamily: "Bitter",
           ),
         ),
+        // Icone in alto a destra
         actions: [
           IconButton(
             onPressed: scansioneCodice,
@@ -117,6 +133,7 @@ class _AppState extends State<App> {
         ],
       ),
       body: _pages.elementAt(_selectedIndex),
+      // Icone in basso
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(

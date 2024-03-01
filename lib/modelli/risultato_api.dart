@@ -1,5 +1,6 @@
 import "package:bookwarm/modelli/libro.dart";
 
+// Classe per gestire i risultati della chiamata all'API di Google Books
 class RisultatoAPI {
   int? totalItems;
   List<Items>? items;

@@ -72,6 +72,7 @@ class DettagliLibro extends StatelessWidget {
               Text(libro.getStatoString()),
             ],
           ),
+          // Mostriamo i pulsanti per leggere i libri solo negli stati corretti
           if (libro.stato == Stato.daLeggere ||
               libro.stato == Stato.finito) ...[
             ElevatedButton(
@@ -94,7 +95,8 @@ class DettagliLibro extends StatelessWidget {
               },
             )
           ],
-          if (libro.stato == Stato.inLettura) ...[
+          if (libro.stato == Stato.inLettura ||
+              libro.stato == Stato.finito) ...[
             const Text("Sessioni"),
             ...libro.sessioni.map((sessione) {
               final durata = Duration(milliseconds: sessione.durata);
@@ -104,6 +106,8 @@ class DettagliLibro extends StatelessWidget {
               return Text(
                   "Tempo: ${ore > 0 ? "$ore ore, " : ""} ${minuti > 0 ? "$minuti minuti ," : ""}$secondi secondi, Pagine:${sessione.pagineLette}");
             }).toList(),
+          ],
+          if (libro.stato == Stato.inLettura) ...[
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -115,7 +119,7 @@ class DettagliLibro extends StatelessWidget {
               },
               child: const Text("Inizia sessione"),
             ),
-          ]
+          ],
         ],
       ),
       floatingActionButton: FloatingActionButton(

@@ -14,13 +14,18 @@ class GestioneSessione extends StatefulWidget {
 }
 
 class _GestioneSessioneState extends State<GestioneSessione> {
+  // Classe per gestire il cronometro
   late Stopwatch stopwatch;
+  // Utilizziamo un timer per aggiornare lo stato ogni secondo,
+  // in modo da mostrare il tempo corretto
   late Timer timer;
 
   @override
   void initState() {
     super.initState();
     stopwatch = Stopwatch();
+    // Ogni secondo aggiorniamo lo stato,
+    // per forzare il ricaricamento della pagina
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() {});
     });
@@ -41,6 +46,7 @@ class _GestioneSessioneState extends State<GestioneSessione> {
     }
   }
 
+  // Formatta il valore del cronometro nel formato che vogliamo
   String returnFormattedText() {
     final milli = stopwatch.elapsed.inMilliseconds;
 
@@ -56,9 +62,9 @@ class _GestioneSessioneState extends State<GestioneSessione> {
 
     final stringaSecondi = secondi.toString().padLeft(2, "0");
     final stringaMinuti = minuti.toString().padLeft(2, "0");
-    final stringOre = ore.toString().padLeft(2, "0");
+    final stringaOre = ore.toString().padLeft(2, "0");
 
-    return "$stringOre:$stringaMinuti:$stringaSecondi";
+    return "$stringaOre:$stringaMinuti:$stringaSecondi";
   }
 
   @override

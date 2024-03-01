@@ -8,9 +8,12 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Questo widget ci permette di mostrare i valori dei libri nella `Box`
+    // quando questi si aggiornano
     return ValueListenableBuilder<Box<Libro>>(
       valueListenable: Hive.box<Libro>("libri").listenable(),
       builder: (context, box, _) {
+        // Filtriamo i libri da `inLettura`
         final daLeggere = box.values
             .where((element) => element.stato == Stato.inLettura)
             .toList();
