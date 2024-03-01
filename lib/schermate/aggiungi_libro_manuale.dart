@@ -13,18 +13,26 @@ class AggiungiLibroManuale extends StatefulWidget {
 class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
   final formKey = GlobalKey<FormState>();
 
-  final controllerTitolo = TextEditingController();
-  final controllerAutore = TextEditingController();
-  final controllerCasaEditrice = TextEditingController();
-  final controllerPagine = TextEditingController();
-  final controllerIsbn = TextEditingController();
-  final controllerDescrizione = TextEditingController();
+  late TextEditingController controllerTitolo;
+  late TextEditingController controllerAutore;
+  late TextEditingController controllerCasaEditrice;
+  late TextEditingController controllerPagine;
+  late TextEditingController controllerIsbn;
+  late TextEditingController controllerDescrizione;
 
   late Box<Libro> libri;
 
   @override
   void initState() {
     super.initState();
+
+    controllerTitolo = TextEditingController();
+    controllerAutore = TextEditingController();
+    controllerCasaEditrice = TextEditingController();
+    controllerPagine = TextEditingController();
+    controllerIsbn = TextEditingController();
+    controllerDescrizione = TextEditingController();
+
     libri = Hive.box("libri");
   }
 

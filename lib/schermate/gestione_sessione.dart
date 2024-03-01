@@ -59,20 +59,6 @@ class _GestioneSessioneState extends State<GestioneSessione> {
     final stringOre = ore.toString().padLeft(2, "0");
 
     return "$stringOre:$stringaMinuti:$stringaSecondi";
-
-    // String _ = (milli % 1000)
-    //     .toString()
-    //     .padLeft(3, "0"); // this one for the miliseconds
-    // String seconds = ((milli ~/ 1000) % 60)
-    //     .toString()
-    //     .padLeft(2, "0"); // this is for the second
-    // String minutes = ((milli ~/ 1000) ~/ 60)
-    //     .toString()
-    //     .padLeft(2, "0"); // this is for the minute
-
-    // String hours = ((milli ~/ 1000) ~/ 60)
-    //     .toString()
-    //     .padLeft(2, "0"); // this is for the hour
   }
 
   @override
@@ -81,29 +67,42 @@ class _GestioneSessioneState extends State<GestioneSessione> {
       appBar: AppBar(
         title: const Text("Sessione"),
       ),
-      body: Column(
+      body: ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.only(top: 50),
         children: [
-          Text(returnFormattedText()),
-          ElevatedButton(
-            onPressed: () {
-              handleStartStop();
-            },
-            child: Text(stopwatch.isRunning ? "Pausa" : "Riprendi"),
+          Center(
+            child: Text(
+              returnFormattedText(),
+              style: const TextStyle(fontSize: 32),
+            ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FineSessione(
-                    libro: widget.libro,
-                    durata: stopwatch.elapsed,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                handleStartStop();
+              },
+              child: Text(stopwatch.isRunning ? "Pausa" : "Riprendi"),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FineSessione(
+                      libro: widget.libro,
+                      durata: stopwatch.elapsed,
+                    ),
                   ),
-                ),
-              );
-            },
-            child: const Text("Finito"),
+                );
+              },
+              child: const Text("Finito"),
+            ),
           ),
         ],
       ),

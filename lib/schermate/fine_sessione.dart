@@ -13,6 +13,8 @@ class FineSessione extends StatefulWidget {
 }
 
 class _FineSessioneState extends State<FineSessione> {
+  final formKey = GlobalKey<FormState>();
+
   late TextEditingController controllerPaginaIniziale;
   late TextEditingController controllerPaginaFinale;
 
@@ -27,39 +29,76 @@ class _FineSessioneState extends State<FineSessione> {
   }
 
   @override
+  void dispose() {
+    controllerPaginaIniziale.dispose();
+    controllerPaginaFinale.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Fine sessione"),
       ),
-      body: Column(
-        children: [
-          const Text("Pagina Iniziale:"),
-          TextField(
-            controller: controllerPaginaIniziale,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          ),
-          const Text("Pagina finale:"),
-          TextField(
-            controller: controllerPaginaFinale,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final pagineLette = int.parse(controllerPaginaFinale.value.text) -
-                  int.parse(controllerPaginaIniziale.value.text);
-              widget.libro.aggiungiSessione(pagineLette, widget.durata);
-              widget.libro.save();
-              // Navigator.pop(context);
-              Navigator.of(context)
-                ..pop()
-                ..pop();
-            },
-            child: const Text("Salva"),
-          ),
-        ],
+      body: Form(
+        key: formKey,
+        child: Column(
+          children: [
+            const Text(
+              "Pagina iniziale",
+              style: TextStyle(fontSize: 20),
+            ),
+            TextFormField(
+              controller: controllerPaginaIniziale,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Inserisci pagina iniziale";
+                }
+                if (int.parse(value) < 0) {
+                  return "Inserisci un numero positivo";
+                }
+                return null;
+              },
+            ),
+            const Text(
+              "Pagina finale",
+              style: TextStyle(fontSize: 20),
+            ),
+            TextFormField(
+              controller: controllerPaginaFinale,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Inserisci pagina finale";
+                }
+                if (int.parse(value) <
+                    int.parse(controllerPaginaIniziale.value.text)) {
+                  return "La pagina finale deve essere dopo quella iniziale";
+                }
+                return null;
+              },
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (formKey.currentState!.validate()) {
+                  final pagineLette =
+                      int.parse(controllerPaginaFinale.value.text) -
+                          int.parse(controllerPaginaIniziale.value.text);
+                  widget.libro.aggiungiSessione(pagineLette, widget.durata);
+                  widget.libro.save();
+                  Navigator.of(context)
+                    ..pop()
+                    ..pop();
+                }
+              },
+              child: const Text("Salva"),
+            ),
+          ],
+        ),
       ),
     );
   }
