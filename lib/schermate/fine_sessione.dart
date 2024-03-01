@@ -89,7 +89,6 @@ class _FineSessioneState extends State<FineSessione> {
                       int.parse(controllerPaginaFinale.value.text) -
                           int.parse(controllerPaginaIniziale.value.text);
                   widget.libro.aggiungiSessione(pagineLette, widget.durata);
-                  widget.libro.save();
                   Navigator.of(context)
                     ..pop()
                     ..pop();

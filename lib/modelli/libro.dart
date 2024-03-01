@@ -82,6 +82,7 @@ class Libro extends HiveObject {
     await boxSessioni.add(sessione);
     // e infine alla lista delle sessioni del libro
     sessioni.add(sessione);
+    save();
   }
 
   // Crea un `Libro` partendo da un json
