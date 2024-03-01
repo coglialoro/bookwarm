@@ -42,8 +42,15 @@ class DettagliLibro extends StatelessWidget {
               ),
             ),
           ),
-          Text(libro.casaEditice ?? ""),
-          Text(libro.descrizione ?? ""),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("Casa editrice: "),
+              Text(libro.casaEditice ?? "Non disponibile"),
+            ],
+          ),
+          const Text("Descrizione:"),
+          Text(libro.descrizione ?? "Non disponibile"),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [

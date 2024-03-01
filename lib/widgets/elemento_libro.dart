@@ -23,7 +23,7 @@ class ElementoLibro extends StatelessWidget {
             ? Image.network(
                 libro.copertina!,
               )
-            : const Placeholder(),
+            : const Text(""),
         onTap: () {
           Navigator.push(
             context,
