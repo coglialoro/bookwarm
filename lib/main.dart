@@ -14,7 +14,7 @@ import "package:http/http.dart" as http;
 
 void main() async {
   // Inizializzazione necessaria per `Hive`
-  WidgetsFlutterBinding.ensureInitialized();
+  //WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 
   // Registriamo gli `Adapter` per le classi di `Hive`
@@ -24,8 +24,9 @@ void main() async {
 
   // Apriamo le `Box` di `Hive`
   // Ogni `Box` e' piu' o meno equivalente ad una tabella sql
-  await Hive.openBox<Libro>("libri");
+  // L'ordine e' importante, se si apre prima libri da errore
   await Hive.openBox<Sessione>("sessioni");
+  await Hive.openBox<Libro>("libri");
 
   runApp(
     MaterialApp(

@@ -37,7 +37,7 @@ class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
     controllerDescrizione = TextEditingController();
 
     // Apriamo la box
-    libri = Hive.box("libri");
+    libri = Hive.box<Libro>("libri");
   }
 
   @override
