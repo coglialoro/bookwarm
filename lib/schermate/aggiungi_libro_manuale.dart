@@ -57,79 +57,100 @@ class _AggiungiLibroManualeState extends State<AggiungiLibroManuale> {
         key: formKey,
         child: ListView(
           children: [
-            TextFormField(
-              controller: controllerTitolo,
-              decoration: const InputDecoration(hintText: "Titolo"),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Inserisci un titolo";
-                }
-                return null;
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: controllerTitolo,
+                decoration: const InputDecoration(hintText: "Titolo"),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Inserisci un titolo";
+                  }
+                  return null;
+                },
+              ),
             ),
-            TextFormField(
-              controller: controllerAutore,
-              decoration: const InputDecoration(hintText: "Autore"),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Inserisci un autore";
-                }
-                return null;
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: controllerAutore,
+                decoration: const InputDecoration(hintText: "Autore"),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Inserisci un autore";
+                  }
+                  return null;
+                },
+              ),
             ),
-            TextFormField(
-              controller: controllerCasaEditrice,
-              decoration: const InputDecoration(hintText: "Casa Editrice"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: controllerCasaEditrice,
+                decoration: const InputDecoration(hintText: "Casa Editrice"),
+              ),
             ),
-            TextFormField(
-              controller: controllerPagine,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: const InputDecoration(hintText: "Pagine"),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Inserisci numero pagine";
-                }
-                return null;
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: controllerPagine,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: const InputDecoration(hintText: "Pagine"),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Inserisci numero pagine";
+                  }
+                  return null;
+                },
+              ),
             ),
-            TextFormField(
-              controller: controllerIsbn,
-              maxLength: 13,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: const InputDecoration(hintText: "ISBN"),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Inserisci ISBN";
-                }
-                if (value.length < 13) {
-                  return "ISBN deve avere 13 caratteri";
-                }
-                return null;
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: controllerIsbn,
+                maxLength: 13,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                decoration: const InputDecoration(hintText: "ISBN"),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Inserisci ISBN";
+                  }
+                  if (value.length < 13) {
+                    return "ISBN deve avere 13 caratteri";
+                  }
+                  return null;
+                },
+              ),
             ),
-            TextFormField(
-              controller: controllerDescrizione,
-              decoration: const InputDecoration(hintText: "Descrizione"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                controller: controllerDescrizione,
+                decoration: const InputDecoration(hintText: "Descrizione"),
+              ),
             ),
             const Padding(padding: EdgeInsets.all(8)),
-            ElevatedButton(
-                onPressed: () async {
-                  if (formKey.currentState!.validate()) {
-                    final libro = Libro(
-                      titolo: controllerTitolo.value.text,
-                      autore: controllerAutore.value.text,
-                      pagine: int.parse(controllerPagine.value.text),
-                      isbn: controllerIsbn.value.text,
-                      casaEditice: controllerCasaEditrice.value.text,
-                      descrizione: controllerDescrizione.value.text,
-                    );
-                    libri.add(libro);
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text("Aggiungi"))
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      final libro = Libro(
+                        titolo: controllerTitolo.value.text,
+                        autore: controllerAutore.value.text,
+                        pagine: int.parse(controllerPagine.value.text),
+                        isbn: controllerIsbn.value.text,
+                        casaEditice: controllerCasaEditrice.value.text,
+                        descrizione: controllerDescrizione.value.text,
+                      );
+                      libri.add(libro);
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: const Text("Aggiungi")),
+            )
           ],
         ),
       ),
